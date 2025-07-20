@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Inpostly Instagram Scraper",
+  "version": "1.0.0",
+  "description": "Scrape Instagram contact info and analytics using your Inpostly backend.",
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon16.png",
+    "48": "icon16.png",
+    "128": "icon16.png"
+  },
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "http://localhost:500/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "32": "icon16.png",
+      "48": "icon16.png",
+      "128": "icon16.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["login.html", "popup.html", "popup.css", "login.js", "plan.html", "plan.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

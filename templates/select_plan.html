@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Plan - Inpostly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Modern Exciting Color Palette */
+            --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            --accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            --warning: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            --danger: linear-gradient(135deg, #ff7675 0%, #fd79a8 100%);
+            --purple: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            --ocean: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            --sunset: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+            --forest: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            
+            /* Background Variations */
+            --bg-main: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --bg-glass: rgba(255, 255, 255, 0.1);
+            --bg-dark: #1a1a2e;
+            --bg-light: #f8fafc;
+            
+            /* Text Colors */
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --text-light: #a0aec0;
+            --text-white: #ffffff;
+            
+            /* Utility Colors */
+            --white: #ffffff;
+            --black: #000000;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            /* Modern Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 40px rgba(102, 126, 234, 0.3);
+            
+            /* Border Radius */
+            --radius-xs: 4px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-2xl: 24px;
+            --radius-full: 9999px;
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+            --transition-bounce: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            font-feature-settings: 'cv11', 'ss01';
+            font-variation-settings: 'opsz' 32;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        /* Advanced Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--bg-main);
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+            animation: morphBackground 15s ease-in-out infinite;
+        }
+
+        @keyframes morphBackground {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg);
+                filter: hue-rotate(0deg);
+            }
+            33% { 
+                transform: scale(1.1) rotate(5deg);
+                filter: hue-rotate(90deg);
+            }
+            66% { 
+                transform: scale(0.9) rotate(-3deg);
+                filter: hue-rotate(180deg);
+            }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float-up 15s linear infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; width: 10px; height: 10px; }
+        .particle:nth-child(2) { left: 20%; animation-delay: -2s; width: 6px; height: 6px; }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Main Container */
+        .plan-container {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-2xl);
+            padding: 3rem 2.5rem;
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+            animation: slideInScale 0.8s var(--transition-bounce);
+        }
+
+        @keyframes slideInScale {
+            0% {
+                transform: translateY(50px) scale(0.9);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Header */
+        .plan-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .plan-header h1 {
+            background: var(--primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* Plan Buttons */
+        .plan-btn {
+            margin: 1.5rem 0;
+            width: 100%;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--gray-200);
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            background: var(--white);
+            color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plan-btn.basic {
+            border-color: rgba(79, 172, 254, 0.3);
+        }
+
+        .plan-btn.premium {
+            border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .plan-btn.enterprise {
+            border-color: rgba(162, 155, 254, 0.3);
+        }
+
+        .plan-btn.basic:hover {
+            background: var(--accent);
+            color: var(--white);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .plan-btn.premium:hover {
+            background: var(--secondary);
+            color: var(--white);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .plan-btn.enterprise:hover {
+            background: var(--purple);
+            color: var(--white);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="plan-container">
+        <div class="plan-header">
+            <h1>Choose Your Plan</h1>
+            <p>Select the perfect plan for your Instagram scraping needs</p>
+        </div>
+
+        <form method="POST">
+            <button class="plan-btn basic" name="plan" value="basic" type="submit">
+                <i class="fas fa-rocket"></i>
+                Basic Plan (Free, up to 10 accounts)
+            </button>
+            <button class="plan-btn premium" name="plan" value="premium" type="submit">
+                <i class="fas fa-crown"></i>
+                Premium Plan ($29.99/month, up to 50 accounts)
+            </button>
+            <button class="plan-btn enterprise" name="plan" value="enterprise" type="submit" style="background: var(--purple); color: var(--white); border-color: rgba(162, 155, 254, 0.3);">
+                <i class="fas fa-building"></i>
+                Enterprise Plan ($99.99/month, up to 200 accounts)
+            </button>
+        </form>
+    </div>
+</body>
+</html>

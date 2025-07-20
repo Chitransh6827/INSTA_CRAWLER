@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inpostly Instagram Scraper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="topbar-actions">
+            <button id="changePlanBtn" class="btn btn-tertiary">Change Plan</button>
+            <button id="logoutBtn" class="btn btn-tertiary">Logout</button>
+        </div>
+        <div class="header">
+            <h1>🔍 Instagram Contact Scraper</h1>
+            <p>Discover and extract contact information from Instagram posts with advanced analytics</p>
+        </div>
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <div class="main-left">
+                <div class="search-section">
+                    <div class="search-card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-search"></i>
+                                Search Instagram Posts
+                            </h2>
+                            <p class="card-subtitle">Enter a keyword to find and analyze Instagram posts for contact information</p>
+                        </div>
+                        <form id="searchForm">
+                            <div class="form-group">
+                                <label for="keyword" class="form-label">Search Keyword</label>
+                                <div class="input-group">
+                                    <input type="text" id="keyword" name="keyword" class="form-input" placeholder="e.g., fitness, travel, food..." required>
+                                    <i class="fas fa-hashtag input-icon"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="unique_accounts" class="form-label">Unique Accounts to Process</label>
+                                <div class="input-group">
+                                    <input type="number" id="unique_accounts" name="unique_accounts" class="form-input" value="5" min="1" max="200">
+                                    <i class="fas fa-users input-icon"></i>
+                                </div>
+                            </div>
+                            <div class="progress-container" id="progressContainer">
+                                <div class="progress-label">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span id="progressText">Processing...</span>
+                                </div>
+                                <div class="progress-wrapper">
+                                    <div class="progress-bar" id="progressBar"></div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="searchBtn">
+                                <i class="fas fa-search"></i>
+                                <span class="btn-text">Start Scraping</span>
+                                <div class="spinner" style="display: none;"></div>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="results-section">
+                    <div class="results-container" id="resultsContainer">
+                        <div class="results-card">
+                            <div class="results-header">
+                                <h2>Scraping Results</h2>
+                                <p id="resultsSubtitle">Found contact information and analytics</p>
+                            </div>
+                            <div class="results-body" id="resultsBody">
+                                <!-- Results will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;margin-bottom:0.7rem;text-align:center;">
+                    <button id="downloadResultsBtn" class="btn btn-primary" style="width:90%;margin-bottom:0.7rem;display:none;">Download Results</button>
+                </div>
+            </div>
+            <!-- Sidebar can be added here if needed -->
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>

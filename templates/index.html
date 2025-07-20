@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Contact Scraper - Inpostly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Modern Exciting Color Palette */
+            --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            --accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            --warning: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            --danger: linear-gradient(135deg, #ff7675 0%, #fd79a8 100%);
+            --purple: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            --ocean: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            --sunset: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+            --forest: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            
+            /* Background Variations */
+            --bg-main: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --bg-glass: rgba(255, 255, 255, 0.1);
+            --bg-dark: #1a1a2e;
+            --bg-light: #f8fafc;
+            
+            /* Text Colors */
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --text-light: #a0aec0;
+            --text-white: #ffffff;
+            
+            /* Utility Colors */
+            --white: #ffffff;
+            --black: #000000;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            /* Modern Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 40px rgba(102, 126, 234, 0.3);
+            
+            /* Border Radius */
+            --radius-xs: 4px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-2xl: 24px;
+            --radius-full: 9999px;
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+            --transition-bounce: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-main);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            font-feature-settings: 'cv11', 'ss01';
+            font-variation-settings: 'opsz' 32;
+            line-height: 1.6;
+        }
+
+        /* Advanced Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: var(--bg-main);
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+            animation: morphBackground 15s ease-in-out infinite;
+        }
+
+        .animated-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><circle cx="20" cy="20" r="3" fill="rgba(255,255,255,0.1)" filter="url(%23glow)"><animate attributeName="r" values="3;8;3" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.1;0.3;0.1" dur="4s" repeatCount="indefinite"/></circle><circle cx="80" cy="40" r="2" fill="rgba(255,255,255,0.15)" filter="url(%23glow)"><animate attributeName="r" values="2;6;2" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.15;0.4;0.15" dur="6s" repeatCount="indefinite"/></circle><circle cx="60" cy="80" r="4" fill="rgba(255,255,255,0.1)" filter="url(%23glow)"><animate attributeName="r" values="4;9;4" dur="5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.1;0.25;0.1" dur="5s" repeatCount="indefinite"/></circle></svg>');
+            animation: floatElements 20s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes morphBackground {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg);
+                filter: hue-rotate(0deg);
+            }
+            33% { 
+                transform: scale(1.1) rotate(5deg);
+                filter: hue-rotate(90deg);
+            }
+            66% { 
+                transform: scale(0.9) rotate(-3deg);
+                filter: hue-rotate(180deg);
+            }
+        }
+
+        @keyframes floatElements {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+            100% { transform: translateY(0px) rotate(360deg); }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float-up 15s linear infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; width: 10px; height: 10px; }
+        .particle:nth-child(2) { left: 20%; animation-delay: -2s; width: 6px; height: 6px; }
+        .particle:nth-child(3) { left: 30%; animation-delay: -4s; width: 8px; height: 8px; }
+        .particle:nth-child(4) { left: 40%; animation-delay: -6s; width: 12px; height: 12px; }
+        .particle:nth-child(5) { left: 50%; animation-delay: -8s; width: 4px; height: 4px; }
+        .particle:nth-child(6) { left: 60%; animation-delay: -10s; width: 9px; height: 9px; }
+        .particle:nth-child(7) { left: 70%; animation-delay: -12s; width: 7px; height: 7px; }
+        .particle:nth-child(8) { left: 80%; animation-delay: -14s; width: 11px; height: 11px; }
+        .particle:nth-child(9) { left: 90%; animation-delay: -16s; width: 5px; height: 5px; }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: slideInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--text-white);
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: logoGlow 3s ease-in-out infinite alternate;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        @keyframes logoGlow {
+            0% {
+                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+                transform: scale(1);
+            }
+            100% {
+                filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.6));
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes slideInDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-2xl);
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideInUp 1s ease-out 0.2s both;
+        }
+
+        .navbar-brand {
+            background: var(--primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .navbar-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .tier-badge {
+            background: var(--accent);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+        }
+
+        /* Main Content Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 1.2fr);
+            gap: 3rem;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .main-left {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            background: var(--bg-card);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-lg);
+            padding: 2rem 2rem 2rem 2rem;
+        }
+
+        .main-divider {
+            position: absolute;
+            left: calc(75% - 1.5rem);
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #e5e7eb 0%, #f3f4f6 100%);
+            opacity: 0.5;
+            z-index: 0;
+            border-radius: 1px;
+            pointer-events: none;
+        }
+
+        .search-section, .results-section {
+            width: 100%;
+        }
+
+        .results-section {
+            margin-top: 0.5rem;
+        }
+
+        .main-sidebar {
+            position: sticky;
+            top: 2rem;
+            align-self: flex-start;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main-sidebar {
+                position: static;
+                top: auto;
+            }
+        }
+
+        /* Search Card */
+        .search-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-2xl);
+            padding: 2.5rem;
+            animation: slideInUp 1s ease-out 0.3s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .card-header {
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.25rem 1rem 3.5rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all var(--transition-normal);
+            background: var(--gray-50);
+            color: var(--text-primary);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            transition: all var(--transition-normal);
+        }
+
+        .form-input:focus + .input-icon {
+            color: #667eea;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            text-align: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: var(--white);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            color: var(--white);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Loading States */
+        .loading {
+            position: relative;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Tier Info Card */
+        .tier-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            animation: slideInUp 1s ease-out 0.4s both;
+        }
+
+        .tier-card h3 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .tier-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .tier-features li::before {
+            content: '✓';
+            color: #56ab2f;
+            font-weight: bold;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(86, 171, 47, 0.1);
+            border-radius: 50%;
+            font-size: 0.8rem;
+        }
+
+        /* Stats Card */
+        .stats-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-lg);
+            padding: 1.5rem;
+            animation: slideInUp 1s ease-out 0.5s both;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: var(--radius-lg);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 1.5rem 0;
+            display: none;
+        }
+
+        .progress-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-wrapper {
+            background: var(--gray-200);
+            border-radius: var(--radius-full);
+            height: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--success);
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: var(--radius-full);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, transparent 75%, transparent);
+            background-size: 20px 20px;
+            animation: moveStripes 1s linear infinite;
+        }
+
+        @keyframes moveStripes {
+            0% { background-position: 0 0; }
+            100% { background-position: 20px 0; }
+        }
+
+        /* Results */
+        .results-container {
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .results-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-2xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-2xl);
+            animation: slideInUp 1s ease-out;
+        }
+
+        .results-header {
+            background: var(--accent);
+            color: var(--white);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .results-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-body {
+            padding: 2rem;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .result-item {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all var(--transition-normal);
+        }
+
+        .result-item:hover {
+            background: var(--white);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .result-info h4 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .username-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .username-link:hover {
+            color: var(--accent-dark);
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        .username-link:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            border-radius: 1px;
+            animation: linkUnderline 0.3s ease-out;
+        }
+
+        @keyframes linkUnderline {
+            from {
+                width: 0;
+                opacity: 0;
+            }
+            to {
+                width: 100%;
+                opacity: 1;
+            }
+        }
+
+        .post-url {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'Courier New', monospace;
+            background: var(--gray-50);
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            margin-top: 0.25rem;
+        }
+
+        .post-indicator {
+            margin-top: 0.5rem;
+        }
+
+        .post-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .detail-group {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-200);
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .hashtags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .hashtag {
+            background: var(--accent);
+            color: var(--white);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .sidebar {
+                grid-row: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .header p {
+                font-size: 1.1rem;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .navbar-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .search-card {
+                padding: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Focus Visible Support */
+        .btn:focus-visible,
+        .form-input:focus-visible,
+        .logout-btn:focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+
+        /* Reduce Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🔍 Instagram Contact Scraper</h1>
+            <p>Discover and extract contact information from Instagram posts with advanced analytics</p>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="navbar-brand">Inpostly</div>
+            <div class="navbar-info">
+                <span class="tier-badge">{{ user_tier|title }} Plan</span>
+                <a href="/logout" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sign Out
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Left Column: Search & Results -->
+            <div class="main-left">
+                <div class="search-section">
+                    <div class="search-card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-search"></i>
+                                Search Instagram Posts
+                            </h2>
+                            <p class="card-subtitle">Enter a keyword to find and analyze Instagram posts for contact information</p>
+                        </div>
+
+                        <form id="searchForm">
+                            <div class="form-group">
+                                <label for="keyword" class="form-label">Search Keyword</label>
+                                <div class="input-group">
+                                    <input type="text" 
+                                           id="keyword" 
+                                           name="keyword" 
+                                           class="form-input" 
+                                           placeholder="e.g., fitness, travel, food..."
+                                           required>
+                                    <i class="fas fa-hashtag input-icon"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="unique_accounts" class="form-label">Unique Accounts to Process</label>
+                                <div class="input-group">
+                                    <input type="number" 
+                                           id="unique_accounts" 
+                                           name="unique_accounts" 
+                                           class="form-input" 
+                                           value="5" 
+                                           min="1" 
+                                           max="200">
+                                    <i class="fas fa-users input-icon"></i>
+                                </div>
+                            </div>
+
+                            <div class="progress-container" id="progressContainer">
+                                <div class="progress-label">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span id="progressText">Processing...</span>
+                                </div>
+                                <div class="progress-wrapper">
+                                    <div class="progress-bar" id="progressBar"></div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" id="searchBtn">
+                                <i class="fas fa-search"></i>
+                                <span class="btn-text">Start Scraping</span>
+                                <div class="spinner" style="display: none;"></div>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="results-section">
+                    <div class="results-container" id="resultsContainer">
+                        <div class="results-card">
+                            <div class="results-header">
+                                <h2>Scraping Results</h2>
+                                <p id="resultsSubtitle">Found contact information and analytics</p>
+                            </div>
+                            <div class="results-body" id="resultsBody">
+                                <!-- Results will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right Column: Sidebar -->
+            <aside class="main-sidebar">
+                <div class="sidebar">
+                    <!-- Tier Information -->
+                    <div class="tier-card">
+                        <h3>
+                            <i class="fas fa-crown"></i>
+                            Your {{ user_tier|title }} Plan
+                        </h3>
+                        <ul class="tier-features">
+                            {% for feature in tier_info.features %}
+                            <li>{{ feature }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% if user_tier != 'enterprise' %}
+                        <button class="btn btn-secondary" onclick="showUpgradeModal()" style="margin-bottom: 0.5rem;">
+                            <i class="fas fa-arrow-up"></i>
+                            Upgrade Plan
+                        </button>
+                        {% endif %}
+                        <a href="/select_plan" class="btn btn-primary" style="width: 100%; text-decoration: none;">
+                            <i class="fas fa-cog"></i>
+                            Manage Plan
+                        </a>
+                    </div>
+
+                    <!-- Statistics -->
+                    <div class="stats-card">
+                        <h3>
+                            <i class="fas fa-chart-bar"></i>
+                            Usage Statistics
+                        </h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-value" id="accountsProcessed">0</span>
+                                <span class="stat-label">Accounts</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="emailsFound">0</span>
+                                <span class="stat-label">Emails</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="phonesFound">0</span>
+                                <span class="stat-label">Phones</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="hashtagsFound">0</span>
+                                <span class="stat-label">Hashtags</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="tier-card">
+                        <h3>
+                            <i class="fas fa-bolt"></i>
+                            Quick Actions
+                        </h3>
+                        <button class="btn btn-secondary" onclick="exportResults()" style="width: 100%; margin-bottom: 0.5rem;">
+                            <i class="fas fa-download"></i>
+                            Export Results
+                        </button>
+                        <button class="btn btn-primary" onclick="clearResults()" style="width: 100%;">
+                            <i class="fas fa-trash"></i>
+                            Clear Results
+                        </button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        let currentResults = [];
+        let isProcessing = false;
+
+        // Form submission
+        document.getElementById('searchForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (isProcessing) return;
+            
+            const keyword = document.getElementById('keyword').value.trim();
+            const uniqueAccounts = parseInt(document.getElementById('unique_accounts').value);
+            
+            if (!keyword) {
+                alert('Please enter a search keyword');
+                return;
+            }
+
+            await startScraping(keyword, uniqueAccounts);
+        });
+
+        async function startScraping(keyword, uniqueAccounts) {
+            isProcessing = true;
+            
+            // Update UI
+            const searchBtn = document.getElementById('searchBtn');
+            const btnText = searchBtn.querySelector('.btn-text');
+            const spinner = searchBtn.querySelector('.spinner');
+            const progressContainer = document.getElementById('progressContainer');
+            
+            searchBtn.disabled = true;
+            btnText.textContent = 'Processing...';
+            spinner.style.display = 'block';
+            progressContainer.style.display = 'block';
+            
+            // Simulate progress
+            let progress = 0;
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                
+                progressBar.style.width = progress + '%';
+                progressText.textContent = `Processing... ${Math.round(progress)}%`;
+            }, 500);
+
+            try {
+                const response = await fetch('/scrape', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        keyword: keyword,
+                        unique_accounts: uniqueAccounts,
+                        user_id: 'demo_user'
+                    })
+                });
+
+                const data = await response.json();
+                
+                clearInterval(progressInterval);
+                progressBar.style.width = '100%';
+                progressText.textContent = 'Complete!';
+                
+                if (data.error) {
+                    throw new Error(data.message || data.error);
+                }
+
+                currentResults = data.results || [];
+                displayResults(currentResults, data.tier_info);
+                updateStats(currentResults);
+
+            } catch (error) {
+                clearInterval(progressInterval);
+                console.error('Scraping failed:', error);
+                alert('Scraping failed: ' + error.message);
+            } finally {
+                // Reset UI
+                isProcessing = false;
+                searchBtn.disabled = false;
+                btnText.textContent = 'Start Scraping';
+                spinner.style.display = 'none';
+                
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    progressBar.style.width = '0%';
+                }, 2000);
+            }
+        }
+
+        function displayResults(results, tierInfo) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            const resultsBody = document.getElementById('resultsBody');
+            const resultsSubtitle = document.getElementById('resultsSubtitle');
+            
+            resultsContainer.style.display = 'block';
+            resultsSubtitle.textContent = `Found ${results.length} results`;
+            
+            if (results.length === 0) {
+                resultsBody.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                        <p>No results found. Try a different keyword or adjust your search parameters.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            resultsBody.innerHTML = results.map((result, index) => `
+                <div class="result-item">
+                    <div class="result-header">
+                        <div class="result-avatar">
+                            ${result.username ? result.username.charAt(0).toUpperCase() : (index + 1)}
+                        </div>
+                        <div class="result-info">
+                            <h4><a href="${result.url}" target="_blank" class="username-link">@${result.username || 'Unknown'}</a></h4>
+                            <p class="post-url">${result.url}</p>
+                            <div class="post-indicator">
+                                <span class="post-badge">Post ${result.batch_id ? result.batch_id.split('_')[1] || '1' : '1'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="result-details">
+                        <div class="detail-group">
+                            <div class="detail-label">Emails Found</div>
+                            <div class="detail-value">
+                                ${result.emails.length > 0 ? result.emails.join(', ') : 'None found'}
+                            </div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Phone Numbers</div>
+                            <div class="detail-value">
+                                ${result.phones.length > 0 ? result.phones.join(', ') : 'None found'}
+                            </div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Comments Analyzed</div>
+                            <div class="detail-value">${result.comments_found || 0}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Hashtags</div>
+                            <div class="detail-value">
+                                <div class="hashtags">
+                                    ${result.hashtags.slice(0, 5).map(tag => `<span class="hashtag">${tag}</span>`).join('')}
+                                    ${result.hashtags.length > 5 ? `<span class="hashtag">+${result.hashtags.length - 5} more</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats(results) {
+            const accountsProcessed = results.length;
+            const emailsFound = results.reduce((total, result) => total + result.emails.length, 0);
+            const phonesFound = results.reduce((total, result) => total + result.phones.length, 0);
+            const hashtagsFound = results.reduce((total, result) => total + result.hashtags.length, 0);
+
+            // Animate counters
+            animateCounter('accountsProcessed', accountsProcessed);
+            animateCounter('emailsFound', emailsFound);
+            animateCounter('phonesFound', phonesFound);
+            animateCounter('hashtagsFound', hashtagsFound);
+        }
+
+        function animateCounter(elementId, targetValue) {
+            const element = document.getElementById(elementId);
+            const startValue = 0;
+            const duration = 1000;
+            const startTime = performance.now();
+
+            function updateCounter(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const currentValue = Math.floor(startValue + (targetValue - startValue) * progress);
+                
+                element.textContent = currentValue;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                }
+            }
+
+            requestAnimationFrame(updateCounter);
+        }
+
+        function exportResults() {
+            if (currentResults.length === 0) {
+                alert('No results to export');
+                return;
+            }
+
+            const csvContent = [
+                ['Username', 'URL', 'Emails', 'Phones', 'Hashtags', 'Comments Count'],
+                ...currentResults.map(result => [
+                    result.username || 'Unknown',
+                    result.url,
+                    result.emails.join('; '),
+                    result.phones.join('; '),
+                    result.hashtags.join('; '),
+                    result.comments_found || 0
+                ])
+            ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `instagram_scraper_results_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        function clearResults() {
+            if (confirm('Are you sure you want to clear all results?')) {
+                currentResults = [];
+                document.getElementById('resultsContainer').style.display = 'none';
+                updateStats([]);
+            }
+        }
+
+        function showUpgradeModal() {
+            // Create modal HTML
+            const modalHTML = `
+                <div class="upgrade-modal-overlay" id="upgradeModalOverlay">
+                    <div class="upgrade-modal">
+                        <div class="upgrade-modal-header">
+                            <h2><i class="fas fa-crown"></i> Upgrade Your Plan</h2>
+                            <button class="modal-close" onclick="closeUpgradeModal()">&times;</button>
+                        </div>
+                        <div class="upgrade-modal-body">
+                            <p>Choose a plan that suits your needs:</p>
+                            <div class="upgrade-plans">
+                                <div class="upgrade-plan ${getCurrentTier() === 'basic' ? 'current' : ''}" data-tier="basic">
+                                    <div class="plan-header">
+                                        <h3>Basic</h3>
+                                        <div class="plan-price">Free</div>
+                                    </div>
+                                    <ul class="plan-features">
+                                        <li>Up to 10 accounts per search</li>
+                                        <li>20 posts per account</li>
+                                        <li>2 Google search pages</li>
+                                        <li>Basic analytics</li>
+                                    </ul>
+                                    ${getCurrentTier() === 'basic' ? '<button class="upgrade-btn current-plan">Current Plan</button>' : '<button class="upgrade-btn" onclick="upgradeToTier(\'basic\')">Select Basic</button>'}
+                                </div>
+                                <div class="upgrade-plan ${getCurrentTier() === 'premium' ? 'current' : ''}" data-tier="premium">
+                                    <div class="plan-header">
+                                        <h3>Premium</h3>
+                                        <div class="plan-price">$19/month</div>
+                                    </div>
+                                    <ul class="plan-features">
+                                        <li>Up to 50 accounts per search</li>
+                                        <li>100 posts per account</li>
+                                        <li>5 Google search pages</li>
+                                        <li>Advanced analytics</li>
+                                        <li>Email extraction</li>
+                                    </ul>
+                                    ${getCurrentTier() === 'premium' ? '<button class="upgrade-btn current-plan">Current Plan</button>' : '<button class="upgrade-btn premium" onclick="upgradeToTier(\'premium\')">Upgrade to Premium</button>'}
+                                </div>
+                                <div class="upgrade-plan ${getCurrentTier() === 'enterprise' ? 'current' : ''}" data-tier="enterprise">
+                                    <div class="plan-header">
+                                        <h3>Enterprise</h3>
+                                        <div class="plan-price">$49/month</div>
+                                    </div>
+                                    <ul class="plan-features">
+                                        <li>Up to 200 accounts per search</li>
+                                        <li>500 posts per account</li>
+                                        <li>10 Google search pages</li>
+                                        <li>Complete analytics suite</li>
+                                        <li>Priority support</li>
+                                        <li>API access</li>
+                                    </ul>
+                                    ${getCurrentTier() === 'enterprise' ? '<button class="upgrade-btn current-plan">Current Plan</button>' : '<button class="upgrade-btn enterprise" onclick="upgradeToTier(\'enterprise\')">Upgrade to Enterprise</button>'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add modal to page
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            
+            // Add modal styles
+            const modalStyles = `
+                <style id="upgradeModalStyles">
+                .upgrade-modal-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    backdrop-filter: blur(10px);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                    animation: fadeIn 0.3s ease;
+                }
+                
+                .upgrade-modal {
+                    background: var(--bg-card);
+                    border-radius: var(--radius-2xl);
+                    box-shadow: var(--shadow-2xl);
+                    width: 90%;
+                    max-width: 900px;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    animation: slideUp 0.3s ease;
+                }
+                
+                .upgrade-modal-header {
+                    padding: 2rem;
+                    border-bottom: 1px solid var(--gray-200);
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .upgrade-modal-header h2 {
+                    color: var(--text-primary);
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+                
+                .modal-close {
+                    background: none;
+                    border: none;
+                    font-size: 2rem;
+                    color: var(--text-muted);
+                    cursor: pointer;
+                    padding: 0;
+                    line-height: 1;
+                }
+                
+                .modal-close:hover {
+                    color: var(--text-primary);
+                }
+                
+                .upgrade-modal-body {
+                    padding: 2rem;
+                }
+                
+                .upgrade-plans {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 1.5rem;
+                    margin-top: 1.5rem;
+                }
+                
+                .upgrade-plan {
+                    background: var(--gray-50);
+                    border: 2px solid var(--gray-200);
+                    border-radius: var(--radius-xl);
+                    padding: 1.5rem;
+                    text-align: center;
+                    transition: all var(--transition-normal);
+                }
+                
+                .upgrade-plan:hover {
+                    border-color: #667eea;
+                    transform: translateY(-2px);
+                    box-shadow: var(--shadow-lg);
+                }
+                
+                .upgrade-plan.current {
+                    border-color: #56ab2f;
+                    background: rgba(86, 171, 47, 0.05);
+                }
+                
+                .plan-header h3 {
+                    color: var(--text-primary);
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                    margin-bottom: 0.5rem;
+                }
+                
+                .plan-price {
+                    font-size: 1.5rem;
+                    font-weight: 800;
+                    color: #667eea;
+                    margin-bottom: 1rem;
+                }
+                
+                .plan-features {
+                    list-style: none;
+                    margin-bottom: 1.5rem;
+                    text-align: left;
+                }
+                
+                .plan-features li {
+                    padding: 0.25rem 0;
+                    color: var(--text-secondary);
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+                
+                .plan-features li::before {
+                    content: '✓';
+                    color: #56ab2f;
+                    font-weight: bold;
+                    width: 16px;
+                    height: 16px;
+                    background: rgba(86, 171, 47, 0.1);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 0.8rem;
+                }
+                
+                .upgrade-btn {
+                    width: 100%;
+                    padding: 0.75rem 1.5rem;
+                    border: none;
+                    border-radius: var(--radius-lg);
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all var(--transition-normal);
+                    font-family: 'Inter', sans-serif;
+                }
+                
+                .upgrade-btn:not(.current-plan) {
+                    background: var(--accent);
+                    color: var(--white);
+                }
+                
+                .upgrade-btn:not(.current-plan):hover {
+                    transform: translateY(-1px);
+                    box-shadow: var(--shadow-md);
+                }
+                
+                .upgrade-btn.premium {
+                    background: var(--secondary);
+                }
+                
+                .upgrade-btn.enterprise {
+                    background: var(--purple);
+                }
+                
+                .upgrade-btn.current-plan {
+                    background: #56ab2f;
+                    color: var(--white);
+                    cursor: default;
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                
+                @keyframes slideUp {
+                    from { transform: translateY(50px); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
+                }
+                
+                @media (max-width: 768px) {
+                    .upgrade-plans {
+                        grid-template-columns: 1fr;
+                    }
+                    
+                    .upgrade-modal {
+                        width: 95%;
+                    }
+                    
+                    .upgrade-modal-header,
+                    .upgrade-modal-body {
+                        padding: 1.5rem;
+                    }
+                }
+                </style>
+            `;
+            
+            document.head.insertAdjacentHTML('beforeend', modalStyles);
+        }
+        
+        function closeUpgradeModal() {
+            const overlay = document.getElementById('upgradeModalOverlay');
+            const styles = document.getElementById('upgradeModalStyles');
+            if (overlay) overlay.remove();
+            if (styles) styles.remove();
+        }
+        
+        function getCurrentTier() {
+            // Get current tier from the navbar badge
+            const tierBadge = document.querySelector('.tier-badge');
+            if (tierBadge) {
+                const tierText = tierBadge.textContent.toLowerCase().replace(' plan', '').trim();
+                // Handle variations in tier naming
+                if (tierText.includes('basic')) return 'basic';
+                if (tierText.includes('premium')) return 'premium';
+                if (tierText.includes('enterprise')) return 'enterprise';
+                return tierText;
+            }
+            return 'basic';
+        }
+        
+        async function upgradeToTier(tier) {
+            // Show loading state
+            const button = event.target;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            button.disabled = true;
+            
+            try {
+                const response = await fetch('/upgrade-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        tier: tier
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Show success animation
+                    button.innerHTML = '<i class="fas fa-check"></i> Success!';
+                    button.style.background = '#56ab2f';
+                    
+                    // Close modal after delay
+                    setTimeout(() => {
+                        closeUpgradeModal();
+                        
+                        // Show success notification
+                        showNotification(data.message, 'success');
+                        
+                        // Reload page to reflect changes
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    }, 1500);
+                } else {
+                    throw new Error(data.error || 'Upgrade failed');
+                }
+            } catch (error) {
+                console.error('Upgrade error:', error);
+                
+                // Show error state
+                button.innerHTML = '<i class="fas fa-times"></i> Failed';
+                button.style.background = '#ff7675';
+                
+                // Reset after delay
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    button.style.background = '';
+                }, 2000);
+                
+                showNotification('Upgrade failed: ' + error.message, 'error');
+            }
+        }
+        
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            // Add notification styles if not exists
+            if (!document.getElementById('notificationStyles')) {
+                const notificationStyles = document.createElement('style');
+                notificationStyles.id = 'notificationStyles';
+                notificationStyles.textContent = `
+                    .notification {
+                        position: fixed;
+                        top: 2rem;
+                        right: 2rem;
+                        background: var(--bg-card);
+                        border: 1px solid var(--gray-200);
+                        border-radius: var(--radius-lg);
+                        padding: 1rem 1.5rem;
+                        box-shadow: var(--shadow-lg);
+                        z-index: 1001;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                        min-width: 300px;
+                        animation: slideInRight 0.3s ease, fadeOut 0.3s ease 4.7s;
+                        animation-fill-mode: forwards;
+                    }
+                    
+                    .notification-success {
+                        border-left: 4px solid #56ab2f;
+                        color: #56ab2f;
+                    }
+                    
+                    .notification-error {
+                        border-left: 4px solid #ff7675;
+                        color: #ff7675;
+                    }
+                    
+                    @keyframes slideInRight {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    
+                    @keyframes fadeOut {
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(notificationStyles);
+            }
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Auto-focus keyword input on page load
+        window.addEventListener('load', function() {
+            document.getElementById('keyword').focus();
+        });
+
+        // Add ripple effect to buttons
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const circle = document.createElement('span');
+            const diameter = Math.max(button.clientWidth, button.clientHeight);
+            const radius = diameter / 2;
+
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
+            circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+            circle.classList.add('ripple');
+
+            const ripple = button.getElementsByClassName('ripple')[0];
+            if (ripple) {
+                ripple.remove();
+            }
+
+            button.appendChild(circle);
+        }
+
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', createRipple);
+        });
+
+        // Add ripple effect styles
+        const rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+            .ripple {
+                position: absolute;
+                border-radius: 50%;
+                background-color: rgba(255, 255, 255, 0.6);
+                transform: scale(0);
+                animation: ripple-animation 600ms linear;
+                pointer-events: none;
+            }
+            
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(rippleStyle);
+    </script>
+</body>
+</html>
