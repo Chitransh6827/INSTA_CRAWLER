@@ -1,5 +1,3 @@
-
-
 ## Project Overview
 This is a high-performance Instagram data scraping system with a Flask backend, tiered user system, and Chrome extension frontend. The project consists of three main components:
 
