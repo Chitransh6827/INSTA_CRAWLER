@@ -83,3 +83,6 @@ pip install -r requirements.txt
 ├── chrome_extension/     # Chrome extension source
 └── templates/           # Flask HTML templates
 ```
+
+## Demo
+https://photos.app.goo.gl/M7JyD592ZzcpBqDZ8
